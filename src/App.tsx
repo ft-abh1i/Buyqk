@@ -16,6 +16,16 @@ import {
   Zap,
 } from 'lucide-react';
 import ImageWithFallback from './components/ImageWithFallback';
+import {
+  beauty,
+  dailyEssentials,
+  foodDining,
+  freelancers,
+  kids,
+  medicines,
+  services,
+} from './category-images';
+import seeAll from './category-images/seeAll';
 
 type Category = {
   label: string;
@@ -37,43 +47,43 @@ type Store = {
 const categories: Category[] = [
   {
     label: 'Daily Essentials',
-    image: '/assets/categories/daily-essentials.webp',
+    image: dailyEssentials,
     fallback: '🧺',
     className: 'category-card--essentials',
   },
   {
     label: 'Food & Dining',
-    image: '/assets/categories/food-dining.webp',
+    image: foodDining,
     fallback: '🍔',
     className: 'category-card--food',
   },
   {
     label: 'Medicines',
-    image: '/assets/categories/medicines.webp',
+    image: medicines,
     fallback: '💊',
     className: 'category-card--medicine',
   },
   {
     label: 'Services',
-    image: '/assets/categories/services.webp',
+    image: services,
     fallback: '🛠️',
     className: 'category-card--services',
   },
   {
     label: 'Freelancers',
-    image: '/assets/categories/freelancers.webp',
+    image: freelancers,
     fallback: '💻',
     className: 'category-card--freelancers',
   },
   {
     label: 'Beauty',
-    image: '/assets/categories/beauty.webp',
+    image: beauty,
     fallback: '💄',
     className: 'category-card--beauty',
   },
   {
     label: 'Kids',
-    image: '/assets/categories/kids.webp',
+    image: kids,
     fallback: '🧸',
     className: 'category-card--kids',
   },
@@ -185,12 +195,12 @@ function App() {
             ))}
 
             <button className="category-card category-card--all" type="button">
-              <span className="all-grid-icon" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
+              <ImageWithFallback
+                className="category-image category-image--all"
+                src={seeAll}
+                alt="See all categories"
+                fallback="▦"
+              />
               <span>See All</span>
             </button>
           </section>
