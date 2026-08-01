@@ -3,136 +3,155 @@ import ReactDOM from 'react-dom/client';
 import {
   ArrowLeft,
   ChevronRight,
+  ClipboardList,
   Clock3,
+  Heart,
+  Home,
   MapPin,
   Mic,
+  Plus,
   Search,
+  ShoppingCart,
   Sparkles,
   Star,
+  Tag,
   TrendingUp,
+  UserRound,
   X,
+  Zap,
 } from 'lucide-react';
-
-type SearchItem = {
-  id: string;
-  title: string;
-  subtitle: string;
-  meta: string;
-  category: 'Product' | 'Store' | 'Service';
-  emoji: string;
-  badge?: string;
-  keywords: string[];
-};
 
 type OpenSearchDetail = {
   initialQuery?: string;
 };
 
+type StoreItem = {
+  id: string;
+  name: string;
+  image: string;
+  fallback: string;
+  rating: string;
+  reviews: string;
+  eta: string;
+  categories: string;
+  offer: string;
+};
+
+type ProductItem = {
+  id: string;
+  name: string;
+  unit: string;
+  price: number;
+  oldPrice: number;
+  discount: string;
+  emoji: string;
+  fresh?: boolean;
+  keywords: string[];
+};
+
 const OPEN_SEARCH_EVENT = 'buyqk:open-search';
 const RECENT_SEARCHES_KEY = 'buyqk-recent-searches';
 
-const searchItems: SearchItem[] = [
-  {
-    id: 'milk',
-    title: 'Fresh milk',
-    subtitle: 'Daily Essentials',
-    meta: 'From ₹32 · 10–15 min',
-    category: 'Product',
-    emoji: '🥛',
-    badge: 'Popular',
-    keywords: ['milk', 'dairy', 'grocery', 'fresh'],
-  },
-  {
-    id: 'vegetables',
-    title: 'Fresh vegetables',
-    subtitle: 'Nearby grocery stores',
-    meta: 'From ₹20 · 12–18 min',
-    category: 'Product',
-    emoji: '🥬',
-    keywords: ['vegetable', 'sabji', 'grocery', 'fresh'],
-  },
-  {
-    id: 'biryani',
-    title: 'Paneer biryani',
-    subtitle: 'Food & Dining',
-    meta: 'From ₹149 · 20–25 min',
-    category: 'Product',
-    emoji: '🍛',
-    badge: 'Top rated',
-    keywords: ['food', 'biryani', 'paneer', 'dinner', 'lunch'],
-  },
-  {
-    id: 'medicine',
-    title: 'Medicines near me',
-    subtitle: 'Pharmacy delivery',
-    meta: 'Prescription may be required',
-    category: 'Store',
-    emoji: '💊',
-    keywords: ['medicine', 'pharmacy', 'chemist', 'tablet'],
-  },
+const defaultRecentSearches = ['milk bread fruits', 'eggs', 'atta', 'oranges', 'oil'];
+const trendingSearches = ['Amul milk', 'Brown bread', 'Bananas', 'Apples', 'Curd', 'Paneer'];
+
+const filters = [
+  { id: 'near', label: 'Near me', icon: MapPin },
+  { id: 'fast', label: 'Fast delivery', icon: Zap },
+  { id: 'price', label: 'Best price', icon: Tag },
+  { id: 'open', label: 'Open now', icon: Clock3 },
+];
+
+const stores: StoreItem[] = [
   {
     id: 'freshmart',
-    title: 'FreshMart',
-    subtitle: 'Grocery & daily essentials',
-    meta: '4.4 ★ · 10–15 min',
-    category: 'Store',
-    emoji: '🛒',
-    badge: 'Nearby',
-    keywords: ['store', 'freshmart', 'grocery', 'essentials'],
+    name: 'FreshMart',
+    image: '/assets/stores/freshmart.webp',
+    fallback: 'FM',
+    rating: '4.7',
+    reviews: '1.2K+',
+    eta: '10–15 min',
+    categories: 'Grocery · Fruits · Dairy',
+    offer: 'Free delivery above ₹199',
+  },
+  {
+    id: 'mediquick',
+    name: 'MediQuick',
+    image: '/assets/categories/medicines.webp',
+    fallback: 'MQ',
+    rating: '4.8',
+    reviews: '980+',
+    eta: '15–20 min',
+    categories: 'Pharmacy · Wellness',
+    offer: '20% OFF above ₹499',
   },
   {
     id: 'food-junction',
-    title: 'Food Junction',
-    subtitle: 'Meals, snacks & beverages',
-    meta: '4.3 ★ · 15–20 min',
-    category: 'Store',
-    emoji: '🍽️',
-    keywords: ['restaurant', 'food', 'snacks', 'beverage'],
-  },
-  {
-    id: 'electrician',
-    title: 'Electrician',
-    subtitle: 'Home repair service',
-    meta: 'Available in 25–35 min',
-    category: 'Service',
-    emoji: '⚡',
-    keywords: ['electrician', 'repair', 'service', 'home'],
-  },
-  {
-    id: 'plumber',
-    title: 'Plumber',
-    subtitle: 'Home maintenance service',
-    meta: 'Available in 20–30 min',
-    category: 'Service',
-    emoji: '🔧',
-    keywords: ['plumber', 'pipe', 'repair', 'service'],
-  },
-  {
-    id: 'beauty',
-    title: 'Beauty services at home',
-    subtitle: 'Salon professionals near you',
-    meta: 'Starting at ₹299',
-    category: 'Service',
-    emoji: '💇',
-    keywords: ['beauty', 'salon', 'makeup', 'service'],
+    name: 'Food Junction',
+    image: '/assets/stores/food-junction.webp',
+    fallback: 'FJ',
+    rating: '4.6',
+    reviews: '750+',
+    eta: '15–20 min',
+    categories: 'Meals · Snacks · Drinks',
+    offer: '₹50 OFF above ₹249',
   },
 ];
 
-const quickSearches = [
-  { label: 'Groceries', hint: 'Daily needs', emoji: '🧺' },
-  { label: 'Food', hint: 'Meals & snacks', emoji: '🍔' },
-  { label: 'Medicines', hint: 'Nearby pharmacy', emoji: '💊' },
-  { label: 'Services', hint: 'Home assistance', emoji: '🛠️' },
+const products: ProductItem[] = [
+  {
+    id: 'milk',
+    name: 'Amul Taaza Milk',
+    unit: '1 L pouch',
+    price: 54,
+    oldPrice: 66,
+    discount: '18% OFF',
+    emoji: '🥛',
+    fresh: true,
+    keywords: ['milk', 'amul', 'dairy', 'fresh'],
+  },
+  {
+    id: 'bread',
+    name: 'Britannia Brown Bread',
+    unit: '400 g',
+    price: 36,
+    oldPrice: 40,
+    discount: '10% OFF',
+    emoji: '🍞',
+    keywords: ['bread', 'britannia', 'brown bread', 'bakery'],
+  },
+  {
+    id: 'banana',
+    name: 'Organic Bananas',
+    unit: '500 g',
+    price: 34,
+    oldPrice: 39,
+    discount: '12% OFF',
+    emoji: '🍌',
+    fresh: true,
+    keywords: ['banana', 'bananas', 'fruit', 'organic'],
+  },
+  {
+    id: 'paneer',
+    name: 'Fresh Paneer',
+    unit: '200 g',
+    price: 92,
+    oldPrice: 110,
+    discount: '16% OFF',
+    emoji: '🧀',
+    fresh: true,
+    keywords: ['paneer', 'dairy', 'fresh paneer'],
+  },
 ];
-
-const trendingSearches = ['Milk', 'Paneer biryani', 'Medicines', 'Electrician', 'Fresh vegetables'];
 
 const readRecentSearches = () => {
   try {
     const storedValue = localStorage.getItem(RECENT_SEARCHES_KEY);
-    return storedValue ? (JSON.parse(storedValue) as string[]).slice(0, 5) : [];
+    if (!storedValue) return defaultRecentSearches;
+    const parsedValue = JSON.parse(storedValue) as string[];
+    return parsedValue.length > 0 ? parsedValue.slice(0, 5) : defaultRecentSearches;
   } catch {
-    return [];
+    return defaultRecentSearches;
   }
 };
 
@@ -140,6 +159,9 @@ function SearchPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>(readRecentSearches);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [cartCount, setCartCount] = useState(2);
+  const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -158,7 +180,6 @@ function SearchPage() {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setIsOpen(false);
@@ -166,22 +187,18 @@ function SearchPage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.clearTimeout(focusTimer);
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
   const normalizedQuery = query.trim().toLowerCase();
-  const results = useMemo(() => {
-    if (!normalizedQuery) return [];
+  const visibleProducts = useMemo(() => {
+    if (!normalizedQuery) return products;
 
-    return searchItems.filter((item) => {
-      const searchableText = [item.title, item.subtitle, item.category, ...item.keywords]
-        .join(' ')
-        .toLowerCase();
-      return searchableText.includes(normalizedQuery);
-    });
+    return products.filter((product) =>
+      [product.name, product.unit, ...product.keywords].join(' ').toLowerCase().includes(normalizedQuery),
+    );
   }, [normalizedQuery]);
 
   const saveRecentSearch = (value: string) => {
@@ -197,14 +214,14 @@ function SearchPage() {
     try {
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updatedSearches));
     } catch {
-      // Searching still works when storage is unavailable.
+      // Search remains usable when storage is unavailable.
     }
   };
 
   const runSearch = (value: string) => {
     setQuery(value);
     saveRecentSearch(value);
-    inputRef.current?.focus();
+    window.setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -221,147 +238,199 @@ function SearchPage() {
     }
   };
 
+  const toggleFilter = (filterId: string) => {
+    setActiveFilters((currentFilters) =>
+      currentFilters.includes(filterId)
+        ? currentFilters.filter((id) => id !== filterId)
+        : [...currentFilters, filterId],
+    );
+  };
+
+  const toggleLike = (productId: string) => {
+    setLikedProducts((currentProducts) =>
+      currentProducts.includes(productId)
+        ? currentProducts.filter((id) => id !== productId)
+        : [...currentProducts, productId],
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="search-page-layer" role="dialog" aria-modal="true" aria-label="BuyQK search">
+    <div className="search-page-layer" role="dialog" aria-modal="true" aria-label="BuyQK Explore">
       <div className="search-page">
-        <header className="search-page-header">
-          <button className="search-back-button" type="button" onClick={() => setIsOpen(false)} aria-label="Go back">
+        <header className="explore-header">
+          <button className="explore-icon-button" type="button" onClick={() => setIsOpen(false)} aria-label="Go back">
             <ArrowLeft size={22} strokeWidth={2.2} />
           </button>
-          <div>
-            <h1>Search BuyQK</h1>
-            <p>Products, food, medicines and services</p>
+
+          <div className="explore-brand" aria-label="BuyQK">
+            <span>Buy</span><strong>QK</strong>
           </div>
+
+          <button className="explore-cart-button" type="button" aria-label={`Cart with ${cartCount} items`}>
+            <ShoppingCart size={25} strokeWidth={2} />
+            <span>{cartCount}</span>
+          </button>
         </header>
 
-        <form className="search-page-form" onSubmit={handleSubmit}>
-          <Search className="search-page-leading-icon" size={22} strokeWidth={2} />
+        <form className="explore-search-form" onSubmit={handleSubmit}>
+          <Search className="explore-search-icon" size={23} strokeWidth={2} />
           <input
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="What do you need?"
+            placeholder="Search products, stores or services"
             aria-label="Search products, stores and services"
           />
           {query && (
-            <button className="search-clear-button" type="button" onClick={() => setQuery('')} aria-label="Clear search">
-              <X size={17} strokeWidth={2.2} />
+            <button className="explore-clear-button" type="button" onClick={() => setQuery('')} aria-label="Clear search">
+              <X size={16} strokeWidth={2.2} />
             </button>
           )}
-          <button className="search-ai-mic-button" type="button" aria-label="Search with QK AI or voice">
-            <Mic size={21} strokeWidth={2.1} />
-            <Sparkles className="search-ai-sparkle" size={11} fill="currentColor" strokeWidth={1.5} />
+          <button className="explore-ai-button" type="button" aria-label="Search with QK AI or voice">
+            <Sparkles size={18} fill="currentColor" strokeWidth={1.5} />
+            <Mic size={18} strokeWidth={2} />
           </button>
         </form>
 
-        {!normalizedQuery ? (
-          <>
-            {recentSearches.length > 0 && (
-              <section className="search-page-section">
-                <div className="search-section-heading">
-                  <div>
-                    <Clock3 size={18} />
-                    <h2>Recent searches</h2>
-                  </div>
-                  <button type="button" onClick={clearRecentSearches}>Clear</button>
-                </div>
-                <div className="recent-search-list">
-                  {recentSearches.map((search) => (
-                    <button type="button" key={search} onClick={() => runSearch(search)}>
-                      <Clock3 size={15} />
-                      <span>{search}</span>
-                    </button>
-                  ))}
-                </div>
-              </section>
-            )}
+        <div className="explore-filter-row" aria-label="Search filters">
+          {filters.map(({ id, label, icon: Icon }) => (
+            <button
+              className={activeFilters.includes(id) ? 'is-active' : ''}
+              type="button"
+              key={id}
+              onClick={() => toggleFilter(id)}
+            >
+              <Icon size={15} fill={id === 'near' && activeFilters.includes(id) ? 'currentColor' : 'none'} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </div>
 
-            <section className="search-page-section">
-              <div className="search-section-heading">
-                <div>
-                  <Search size={18} />
-                  <h2>Quick search</h2>
-                </div>
-              </div>
-              <div className="quick-search-grid">
-                {quickSearches.map((item) => (
-                  <button type="button" key={item.label} onClick={() => runSearch(item.label)}>
-                    <span className="quick-search-emoji">{item.emoji}</span>
-                    <span className="quick-search-copy">
-                      <strong>{item.label}</strong>
-                      <small>{item.hint}</small>
-                    </span>
-                    <ChevronRight size={17} />
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            <section className="search-page-section">
-              <div className="search-section-heading">
-                <div>
-                  <TrendingUp size={18} />
-                  <h2>Trending near you</h2>
-                </div>
-              </div>
-              <div className="trending-search-list">
-                {trendingSearches.map((search, index) => (
-                  <button type="button" key={search} onClick={() => runSearch(search)}>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <strong>{search}</strong>
-                    <TrendingUp size={16} />
-                  </button>
-                ))}
-              </div>
-            </section>
-          </>
-        ) : (
-          <section className="search-page-section search-results-section">
-            <div className="search-section-heading">
-              <div>
-                <Search size={18} />
-                <h2>{results.length} {results.length === 1 ? 'result' : 'results'}</h2>
-              </div>
-              <span className="search-query-label">“{query.trim()}”</span>
+        {recentSearches.length > 0 && (
+          <section className="explore-section">
+            <div className="explore-section-heading">
+              <h2>Recent searches</h2>
+              <button type="button" onClick={clearRecentSearches}>Clear all</button>
             </div>
-
-            {results.length > 0 ? (
-              <div className="search-results-list">
-                {results.map((item) => (
-                  <button
-                    type="button"
-                    className="search-result-card"
-                    key={item.id}
-                    onClick={() => saveRecentSearch(item.title)}
-                  >
-                    <span className="search-result-image">{item.emoji}</span>
-                    <span className="search-result-copy">
-                      <span className="search-result-topline">
-                        <strong>{item.title}</strong>
-                        {item.badge && <em>{item.badge}</em>}
-                      </span>
-                      <small>{item.subtitle}</small>
-                      <span className="search-result-meta">
-                        {item.category === 'Store' ? <Star size={13} fill="currentColor" /> : <MapPin size={13} />}
-                        {item.meta}
-                      </span>
-                    </span>
-                    <ChevronRight size={19} />
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <div className="search-empty-state">
-                <span>🔎</span>
-                <h3>No matches found</h3>
-                <p>Try another product, store, food item or service.</p>
-                <button type="button" onClick={() => setQuery('')}>Browse suggestions</button>
-              </div>
-            )}
+            <div className="explore-chip-row explore-chip-row--wrap">
+              {recentSearches.map((search) => (
+                <button type="button" key={search} onClick={() => runSearch(search)}>
+                  <Clock3 size={13} />
+                  <span>{search}</span>
+                  <X size={13} />
+                </button>
+              ))}
+            </div>
           </section>
         )}
+
+        <section className="explore-section">
+          <div className="explore-section-heading">
+            <h2>Trending searches</h2>
+            <button type="button">View all <ChevronRight size={15} /></button>
+          </div>
+          <div className="explore-chip-row">
+            {trendingSearches.map((search) => (
+              <button type="button" key={search} onClick={() => runSearch(search)}>
+                <TrendingUp size={14} />
+                <span>{search}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="explore-section">
+          <div className="explore-section-heading">
+            <h2>Suggested stores</h2>
+            <button type="button">View all <ChevronRight size={15} /></button>
+          </div>
+          <div className="suggested-store-row">
+            {stores.map((store) => (
+              <button type="button" className="suggested-store-card" key={store.id}>
+                <div className="suggested-store-top">
+                  <img src={store.image} alt="" onError={(event) => { event.currentTarget.style.display = 'none'; }} />
+                  <span className="store-image-fallback">{store.fallback}</span>
+                  <div>
+                    <strong>{store.name}<em>QK</em></strong>
+                    <span><Star size={12} fill="currentColor" /> {store.rating} <small>({store.reviews})</small></span>
+                    <span><Clock3 size={12} /> {store.eta}</span>
+                  </div>
+                </div>
+                <p>{store.categories}</p>
+                <mark>{store.offer}</mark>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="explore-section explore-products-section">
+          <div className="explore-section-heading">
+            <h2>Products</h2>
+            <span>{visibleProducts.length === products.length ? '120+ results' : `${visibleProducts.length} results`}</span>
+          </div>
+
+          <div className="explore-product-list">
+            {visibleProducts.map((product) => (
+              <article className="explore-product-card" key={product.id}>
+                <div className="explore-product-visual" aria-hidden="true">{product.emoji}</div>
+                <div className="explore-product-copy">
+                  <strong>{product.name}</strong>
+                  <span>{product.unit} {product.fresh && <em>Fresh</em>}</span>
+                  <div className="explore-product-pricing">
+                    <b>₹{product.price}</b>
+                    <del>₹{product.oldPrice}</del>
+                    <small>{product.discount}</small>
+                  </div>
+                </div>
+                <button
+                  className={`explore-like-button ${likedProducts.includes(product.id) ? 'is-liked' : ''}`}
+                  type="button"
+                  onClick={() => toggleLike(product.id)}
+                  aria-label={`Like ${product.name}`}
+                >
+                  <Heart size={18} fill={likedProducts.includes(product.id) ? 'currentColor' : 'none'} />
+                </button>
+                <button className="explore-add-button" type="button" onClick={() => setCartCount((count) => count + 1)}>
+                  <Plus size={17} /> Add
+                </button>
+              </article>
+            ))}
+          </div>
+
+          {visibleProducts.length === 0 && (
+            <div className="explore-empty-state">
+              <span>🔎</span>
+              <h3>No matching products</h3>
+              <p>Try another product, store or service.</p>
+              <button type="button" onClick={() => setQuery('')}>Browse all products</button>
+            </div>
+          )}
+        </section>
+
+        <nav className="explore-bottom-nav" aria-label="Explore navigation">
+          <button type="button" onClick={() => setIsOpen(false)}>
+            <Home size={21} />
+            <span>Home</span>
+          </button>
+          <button className="is-active" type="button">
+            <Search size={22} />
+            <span>Explore</span>
+          </button>
+          <button className="explore-nav-ai" type="button">
+            <span className="explore-nav-ai-orb"><Sparkles size={25} fill="currentColor" /></span>
+            <span>QK AI</span>
+          </button>
+          <button type="button">
+            <ClipboardList size={21} />
+            <span>Orders</span>
+          </button>
+          <button type="button">
+            <UserRound size={21} />
+            <span>Account</span>
+          </button>
+        </nav>
       </div>
     </div>
   );
