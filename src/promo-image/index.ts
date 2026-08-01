@@ -15,14 +15,15 @@ style.id = styleId;
 style.textContent = `
   .promo-card {
     height: auto !important;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 96 / 53;
     margin-top: 9px;
+    overflow: hidden !important;
     border: 0 !important;
     border-radius: 0 !important;
     background-image: url("${promoImage}") !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    background-size: contain !important;
+    background-size: cover !important;
     box-shadow: none !important;
   }
 
