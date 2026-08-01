@@ -70,6 +70,10 @@
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
 }
 
+.category-card:not(.category-card--beauty):not(.category-card--all) > span:last-child {
+  transform: translateY(4px);
+}
+
 .category-image--all {
   object-position: center;
 }
@@ -92,5 +96,9 @@
     bottom: 1px;
     font-size: 8.2px;
     letter-spacing: -0.3px;
+  }
+
+  .category-card:not(.category-card--beauty):not(.category-card--all) > span:last-child {
+    transform: translateY(4px);
   }
 }
