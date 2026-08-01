@@ -325,8 +325,8 @@ function App() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search products, food, medicines or services"
-              aria-label="Search products, food, medicines or services"
+              placeholder="Search, order and delivered"
+              aria-label="Search, order and delivered"
             />
             <button className="ai-search-button" type="button">
               <Sparkles size={20} fill="currentColor" strokeWidth={1.7} />
