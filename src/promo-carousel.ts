@@ -1,6 +1,7 @@
 const CAROUSEL_ID = 'buyqk-promo-carousel';
 const SOURCE_HIDDEN_CLASS = 'promo-card--carousel-source';
 const SLIDE_INTERVAL_MS = 4500;
+const COMPARE_CARD_IMAGE = '/assets/banner/compare-before-buy.webp';
 
 export function installPromoCarousel() {
   const mountCarousel = () => {
@@ -25,47 +26,17 @@ export function installPromoCarousel() {
     compareSlide.type = 'button';
     compareSlide.className = 'promo-slide compare-card';
     compareSlide.setAttribute('aria-label', 'Compare nearby stores before buying');
-    compareSlide.innerHTML = `
-      <span class="compare-card-glow compare-card-glow--blue" aria-hidden="true"></span>
-      <span class="compare-card-glow compare-card-glow--pink" aria-hidden="true"></span>
 
-      <span class="compare-card-header">
-        <span class="compare-card-copy">
-          <span class="compare-card-kicker">SMART SHOPPING</span>
-          <strong>Compare Before You Buy</strong>
-          <small>Check price, rating and delivery time.</small>
-        </span>
-        <span class="compare-card-cta">Compare now <b aria-hidden="true">→</b></span>
-      </span>
-
-      <span class="compare-stores" aria-hidden="true">
-        <span class="compare-store compare-store--blue">
-          <span class="compare-store-top">
-            <span class="compare-store-name">Store A</span>
-            <span class="compare-rating">★ 4.4</span>
-          </span>
-          <span class="compare-store-main">
-            <span class="compare-basket">🛒</span>
-            <span class="compare-price">₹299</span>
-          </span>
-          <span class="compare-store-meta">25 min · Free delivery</span>
-        </span>
-
-        <span class="compare-vs">VS</span>
-
-        <span class="compare-store compare-store--violet">
-          <span class="compare-store-top">
-            <span class="compare-store-name">Store B</span>
-            <span class="compare-rating">★ 4.6</span>
-          </span>
-          <span class="compare-store-main">
-            <span class="compare-basket">🧺</span>
-            <span class="compare-price">₹285</span>
-          </span>
-          <span class="compare-store-meta">30 min · ₹20 delivery</span>
-        </span>
-      </span>
-    `;
+    const compareImage = document.createElement('img');
+    compareImage.className = 'compare-card-image';
+    compareImage.src = COMPARE_CARD_IMAGE;
+    compareImage.alt = 'Compare prices, ratings and delivery time from nearby stores';
+    compareImage.width = 1280;
+    compareImage.height = 634;
+    compareImage.loading = 'eager';
+    compareImage.decoding = 'async';
+    compareImage.fetchPriority = 'high';
+    compareSlide.appendChild(compareImage);
 
     const dots = document.createElement('div');
     dots.className = 'promo-carousel-dots';
