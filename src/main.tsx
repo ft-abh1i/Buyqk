@@ -12,6 +12,7 @@ import './store-images/freshmart.css';
 import './store-images/quickfix.css';
 import './bottom-nav.css';
 import './promo-image';
+import './grocery-section';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
