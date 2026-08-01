@@ -50,6 +50,10 @@
   flex: 0 0 auto;
 }
 
+.header-actions {
+  gap: 16px;
+}
+
 @media (max-width: 360px) {
   .search-panel input {
     font-size: 11.5px;
