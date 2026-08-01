@@ -58,7 +58,7 @@
   z-index: 3;
   left: 3px;
   right: 3px;
-  bottom: 6px;
+  bottom: 2px;
   max-width: none;
   color: #fff;
   font-size: 9px;
@@ -89,7 +89,7 @@
   .category-card > span:last-child {
     left: 2px;
     right: 2px;
-    bottom: 5px;
+    bottom: 1px;
     font-size: 8.2px;
     letter-spacing: -0.3px;
   }
