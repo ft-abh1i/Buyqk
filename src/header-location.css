@@ -1,3 +1,7 @@
+.location-control {
+  max-width: calc(100% - 110px);
+}
+
 .location-icon-wrap {
   width: 25px;
   height: 32px;
@@ -23,4 +27,61 @@
 
 .location-copy {
   margin-left: 7px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.location-kicker {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.location-name-row {
+  min-width: 0;
+  gap: 5px;
+}
+
+.location-name-row strong {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.location-name-row svg {
+  flex: 0 0 auto;
+}
+
+.location-control--loading .location-icon-wrap svg {
+  animation: location-pulse 1.15s ease-in-out infinite;
+}
+
+.location-control--error .location-kicker {
+  color: #ff8a7a;
+}
+
+@keyframes location-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 370px) {
+  .location-name-row strong {
+    max-width: 120px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .location-control--loading .location-icon-wrap svg {
+    animation: none;
+  }
 }
