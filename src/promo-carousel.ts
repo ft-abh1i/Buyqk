@@ -1,8 +1,7 @@
-import compareCardImage from './promo-images/compare';
-
 const CAROUSEL_ID = 'buyqk-promo-carousel';
 const SOURCE_HIDDEN_CLASS = 'promo-card--carousel-source';
 const SLIDE_INTERVAL_MS = 4500;
+const COMPARE_CARD_IMAGE = '/assets/banner/compare-before-buy.webp';
 
 export function installPromoCarousel() {
   const mountCarousel = () => {
@@ -30,10 +29,11 @@ export function installPromoCarousel() {
 
     const compareImage = document.createElement('img');
     compareImage.className = 'compare-card-image';
-    compareImage.src = compareCardImage;
+    compareImage.src = COMPARE_CARD_IMAGE;
     compareImage.alt = 'Compare prices, ratings and delivery time from nearby stores';
-    compareImage.width = 512;
-    compareImage.height = 288;
+    compareImage.width = 768;
+    compareImage.height = 432;
+    compareImage.loading = 'eager';
     compareImage.decoding = 'async';
     compareSlide.appendChild(compareImage);
 
@@ -56,20 +56,30 @@ export function installPromoCarousel() {
     sourceCard.classList.add(SOURCE_HIDDEN_CLASS);
 
     let activeSlide = 0;
-    let intervalId = 0;
+    let intervalId: number | undefined;
 
     const showSlide = (index: number) => {
       activeSlide = index;
       track.classList.toggle('is-second', activeSlide === 1);
       dotButtons.forEach((dot, dotIndex) => {
-        dot.classList.toggle('is-active', dotIndex === activeSlide);
-        dot.setAttribute('aria-current', dotIndex === activeSlide ? 'true' : 'false');
+        const isActive = dotIndex === activeSlide;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
       });
     };
 
+    const stopAutoSlide = () => {
+      if (intervalId !== undefined) {
+        window.clearInterval(intervalId);
+        intervalId = undefined;
+      }
+    };
+
     const startAutoSlide = () => {
-      window.clearInterval(intervalId);
-      intervalId = window.setInterval(() => showSlide(activeSlide === 0 ? 1 : 0), SLIDE_INTERVAL_MS);
+      stopAutoSlide();
+      intervalId = window.setInterval(() => {
+        showSlide(activeSlide === 0 ? 1 : 0);
+      }, SLIDE_INTERVAL_MS);
     };
 
     dotButtons.forEach((dot, index) => {
@@ -79,9 +89,9 @@ export function installPromoCarousel() {
       });
     });
 
-    carousel.addEventListener('mouseenter', () => window.clearInterval(intervalId));
+    carousel.addEventListener('mouseenter', stopAutoSlide);
     carousel.addEventListener('mouseleave', startAutoSlide);
-    carousel.addEventListener('focusin', () => window.clearInterval(intervalId));
+    carousel.addEventListener('focusin', stopAutoSlide);
     carousel.addEventListener('focusout', startAutoSlide);
 
     showSlide(0);
