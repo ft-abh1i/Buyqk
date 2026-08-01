@@ -2,16 +2,20 @@
 .category-grid {
   padding-inline: 3px;
   gap: 11px;
+  justify-items: center;
+  align-items: center;
 }
 
 .category-card {
-  height: 98px !important;
+  width: 80% !important;
+  height: 78px !important;
   padding: 0 !important;
   display: block;
   position: relative;
+  justify-self: center;
   overflow: hidden;
   border: 0 !important;
-  border-radius: 11px;
+  border-radius: 10px;
   background: transparent !important;
   box-shadow: none !important;
 }
@@ -42,14 +46,14 @@
 .category-card > span:last-child {
   position: absolute;
   z-index: 3;
-  left: 3px;
-  right: 3px;
-  bottom: 7px;
+  left: 2px;
+  right: 2px;
+  bottom: 5px;
   max-width: none;
   color: #fff;
-  font-size: 10px;
+  font-size: 8.5px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.05;
   text-align: center;
   white-space: nowrap;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.92);
@@ -66,12 +70,13 @@
   }
 
   .category-card {
-    height: 94px !important;
-    border-radius: 10px;
+    width: 80% !important;
+    height: 75px !important;
+    border-radius: 9px;
   }
 
   .category-card > span:last-child {
-    bottom: 6px;
-    font-size: 9px;
+    bottom: 5px;
+    font-size: 8px;
   }
 }
