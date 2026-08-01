@@ -34,216 +34,24 @@
 }
 
 .compare-card {
-  position: relative;
-  isolation: isolate;
-  padding: 12px 13px 11px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  color: #f8f9ff;
-  text-align: left;
-  cursor: pointer;
-  background:
-    radial-gradient(circle at 15% 10%, rgba(15, 111, 255, 0.2), transparent 38%),
-    radial-gradient(circle at 92% 14%, rgba(198, 31, 255, 0.18), transparent 42%),
-    linear-gradient(135deg, #04112e 0%, #070b25 48%, #13072b 100%);
-  border: 1px solid rgba(117, 74, 255, 0.58);
+  padding: 0;
+  display: block;
+  background: #03081e;
+  border: 1px solid rgba(105, 76, 255, 0.48);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 12px 28px rgba(0, 0, 0, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
-.compare-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(115deg, rgba(41, 136, 255, 0.13), transparent 34%, transparent 68%, rgba(237, 38, 255, 0.12));
-}
-
-.compare-card:focus-visible {
-  outline: 2px solid #fb4e9a;
-  outline-offset: -3px;
-}
-
-.compare-card-glow {
-  position: absolute;
-  z-index: -1;
-  width: 105px;
-  height: 105px;
-  border-radius: 50%;
-  filter: blur(42px);
-  opacity: 0.34;
-  pointer-events: none;
-}
-
-.compare-card-glow--blue {
-  left: -34px;
-  bottom: -48px;
-  background: #006eff;
-}
-
-.compare-card-glow--pink {
-  right: -35px;
-  top: -50px;
-  background: #dc25ff;
-}
-
-.compare-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-width: 0;
-}
-
-.compare-card-copy {
-  min-width: 0;
-  display: grid;
-  gap: 2px;
-}
-
-.compare-card-kicker {
-  color: #a8b8ed;
-  font-size: 7.5px;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.compare-card-copy strong {
-  color: #ffffff;
-  font-size: 20px;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
-}
-
-.compare-card-copy small {
-  color: rgba(218, 225, 251, 0.72);
-  font-size: 10px;
-  line-height: 1.25;
-}
-
-.compare-card-cta {
-  flex: 0 0 auto;
-  min-height: 31px;
-  padding: 0 11px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 800;
-  white-space: nowrap;
-  background: linear-gradient(100deg, #ff9417, #ff385f 53%, #ee2d9a);
-  box-shadow: 0 7px 17px rgba(255, 48, 109, 0.24);
-}
-
-.compare-card-cta b {
-  font-size: 15px;
-  line-height: 1;
-}
-
-.compare-stores {
-  min-height: 0;
-  flex: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
-  align-items: stretch;
-  gap: 7px;
-}
-
-.compare-store {
-  min-width: 0;
-  padding: 7px 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 11px;
-  background: rgba(13, 24, 65, 0.82);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055);
-}
-
-.compare-store--blue {
-  border: 1px solid rgba(36, 115, 255, 0.52);
-  background: linear-gradient(145deg, rgba(13, 41, 104, 0.92), rgba(8, 18, 51, 0.94));
-}
-
-.compare-store--violet {
-  border: 1px solid rgba(164, 48, 255, 0.52);
-  background: linear-gradient(145deg, rgba(65, 20, 100, 0.9), rgba(20, 11, 50, 0.94));
-}
-
-.compare-store-top,
-.compare-store-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5px;
-}
-
-.compare-store-name {
-  min-width: 0;
-  overflow: hidden;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.compare-rating {
-  flex: 0 0 auto;
-  padding: 2px 5px;
-  border-radius: 999px;
-  color: #d8ffda;
-  font-size: 8.5px;
-  font-weight: 800;
-  background: rgba(28, 142, 54, 0.5);
-}
-
-.compare-basket {
-  font-size: 23px;
-  line-height: 1;
-  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.24));
-}
-
-.compare-price {
-  color: #ffffff;
-  font-size: 18px;
-  line-height: 1;
-  font-weight: 850;
-  letter-spacing: -0.03em;
-}
-
-.compare-store-meta {
-  overflow: hidden;
-  color: rgba(220, 226, 249, 0.7);
-  font-size: 8.5px;
-  line-height: 1.2;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.compare-vs {
-  width: 28px;
-  height: 28px;
-  align-self: center;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(141, 87, 255, 0.74);
-  border-radius: 50%;
-  color: #ffffff;
-  font-size: 9px;
-  font-weight: 900;
-  background: linear-gradient(145deg, #132a61, #32135e);
-  box-shadow:
-    0 0 0 3px rgba(88, 51, 200, 0.12),
-    0 6px 15px rgba(0, 0, 0, 0.3);
+.compare-card-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .promo-carousel-dots {
@@ -266,50 +74,6 @@
 .promo-carousel-dot.is-active {
   width: 27px;
   background: linear-gradient(90deg, #8d28ff, #ff2f7d, #ff9d16);
-}
-
-@media (max-width: 380px) {
-  .compare-card {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .compare-card-copy strong {
-    font-size: 17px;
-  }
-
-  .compare-card-copy small {
-    font-size: 9px;
-  }
-
-  .compare-card-cta {
-    min-height: 28px;
-    padding: 0 8px;
-    font-size: 9px;
-  }
-
-  .compare-stores {
-    grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
-    gap: 5px;
-  }
-
-  .compare-store {
-    padding: 6px;
-  }
-
-  .compare-vs {
-    width: 24px;
-    height: 24px;
-    font-size: 8px;
-  }
-
-  .compare-price {
-    font-size: 16px;
-  }
-
-  .compare-basket {
-    font-size: 20px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
