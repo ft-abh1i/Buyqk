@@ -31,8 +31,8 @@ export function installPromoCarousel() {
     compareImage.className = 'compare-card-image';
     compareImage.src = COMPARE_CARD_IMAGE;
     compareImage.alt = 'Compare prices, ratings and delivery time from nearby stores';
-    compareImage.width = 768;
-    compareImage.height = 432;
+    compareImage.width = 384;
+    compareImage.height = 216;
     compareImage.loading = 'eager';
     compareImage.decoding = 'async';
     compareSlide.appendChild(compareImage);
