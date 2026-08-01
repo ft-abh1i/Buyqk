@@ -1,23 +1,97 @@
 import groceryKitchenSprite from './grocery-sprite';
 
-type GroceryCategory = {
+type CategoryItem = {
   label: string;
   position: string;
 };
 
-const categories: GroceryCategory[] = [
-  { label: 'Vegetables & Fruits', position: '2.7% 21.4%' },
-  { label: 'Atta, Rice & Dal', position: '34% 21.4%' },
-  { label: 'Oil, Ghee & Masala', position: '65.3% 21.4%' },
-  { label: 'Dairy, Bread & Eggs', position: '96.6% 21.4%' },
-  { label: 'Bakery & Biscuits', position: '2.7% 89.7%' },
-  { label: 'Dry Fruits & Cereals', position: '34% 89.7%' },
-  { label: 'Chicken, Meat & Fish', position: '65.3% 89.7%' },
-  { label: 'Kitchenware & Appliances', position: '96.6% 89.7%' },
+type HomeCategorySection = {
+  id: string;
+  ariaLabel: string;
+  heading: string;
+  accent: string;
+  image: string;
+  backgroundSize: string;
+  aspectRatio: string;
+  categories: CategoryItem[];
+};
+
+const standardPositions = [
+  '0% 0%',
+  '33.333% 0%',
+  '66.667% 0%',
+  '100% 0%',
+  '0% 100%',
+  '33.333% 100%',
+  '66.667% 100%',
+  '100% 100%',
 ];
 
-const STYLE_ID = 'buyqk-grocery-section-styles';
-const SECTION_CLASS = 'grocery-kitchen-section';
+const makeCategories = (labels: string[]): CategoryItem[] =>
+  labels.map((label, index) => ({ label, position: standardPositions[index] }));
+
+const sections: HomeCategorySection[] = [
+  {
+    id: 'grocery-kitchen',
+    ariaLabel: 'Grocery and Kitchen categories',
+    heading: 'Grocery &',
+    accent: 'Kitchen',
+    image: groceryKitchenSprite,
+    backgroundSize: '436% auto',
+    aspectRatio: '0.72',
+    categories: [
+      { label: 'Vegetables & Fruits', position: '2.7% 21.4%' },
+      { label: 'Atta, Rice & Dal', position: '34% 21.4%' },
+      { label: 'Oil, Ghee & Masala', position: '65.3% 21.4%' },
+      { label: 'Dairy, Bread & Eggs', position: '96.6% 21.4%' },
+      { label: 'Bakery & Biscuits', position: '2.7% 89.7%' },
+      { label: 'Dry Fruits & Cereals', position: '34% 89.7%' },
+      { label: 'Chicken, Meat & Fish', position: '65.3% 89.7%' },
+      { label: 'Kitchenware & Appliances', position: '96.6% 89.7%' },
+    ],
+  },
+  {
+    id: 'snacks-drinks',
+    ariaLabel: 'Snacks and Drinks categories',
+    heading: 'Snacks &',
+    accent: 'Drinks',
+    image: '/assets/categories/snacks-drinks.webp',
+    backgroundSize: '400% 200%',
+    aspectRatio: '0.58',
+    categories: makeCategories([
+      'Chips & Namkeen',
+      'Sweets & Chocolates',
+      'Drinks & Juices',
+      'Tea, Coffee & Milk Drinks',
+      'Instant Food',
+      'Sauces & Spreads',
+      'Paan Corner',
+      'Ice Creams & More',
+    ]),
+  },
+  {
+    id: 'beauty-personal-care',
+    ariaLabel: 'Beauty and Personal Care categories',
+    heading: 'Beauty &',
+    accent: 'Personal Care',
+    image: '/assets/categories/beauty-personal-care.webp',
+    backgroundSize: '400% 200%',
+    aspectRatio: '0.58',
+    categories: makeCategories([
+      'Bath & Body',
+      'Hair',
+      'Skin & Face',
+      'Beauty & Cosmetics',
+      'Feminine Hygiene',
+      'Baby Care',
+      'Health & Pharma',
+      'Sexual Wellness',
+    ]),
+  },
+];
+
+const STYLE_ID = 'buyqk-home-category-section-styles';
+const GROUP_ID = 'buyqk-home-category-groups';
 
 const installStyles = () => {
   if (document.getElementById(STYLE_ID)) return;
@@ -29,15 +103,23 @@ const installStyles = () => {
       display: none !important;
     }
 
-    .${SECTION_CLASS} {
+    .home-category-groups {
+      padding-bottom: 8px;
+    }
+
+    .home-category-section {
+      margin-top: 22px;
+    }
+
+    .home-category-section:first-child {
       margin-top: 17px;
     }
 
-    .grocery-kitchen-heading {
+    .home-category-heading {
       margin: 0 0 12px;
     }
 
-    .grocery-kitchen-heading h2 {
+    .home-category-heading h2 {
       margin: 0;
       color: #ffffff;
       font-size: 22px;
@@ -46,11 +128,11 @@ const installStyles = () => {
       letter-spacing: -0.55px;
     }
 
-    .grocery-kitchen-heading h2 span {
+    .home-category-heading h2 span {
       color: #ffb317;
     }
 
-    .grocery-kitchen-underline {
+    .home-category-underline {
       width: 55px;
       height: 4px;
       margin-top: 8px;
@@ -59,47 +141,45 @@ const installStyles = () => {
       box-shadow: 0 0 12px rgba(164, 51, 255, 0.35);
     }
 
-    .grocery-kitchen-grid {
+    .home-category-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
     }
 
-    .grocery-kitchen-card {
+    .home-category-card {
       width: 100%;
-      aspect-ratio: 0.72;
       padding: 0;
       overflow: hidden;
       border: 0;
       border-radius: 13px;
-      background-color: #0a0d2e;
+      background-color: #080b2a;
       background-repeat: no-repeat;
-      background-size: 436% auto;
       box-shadow: 0 8px 19px rgba(0, 0, 0, 0.2);
       transition: transform 160ms ease, filter 160ms ease;
     }
 
-    .grocery-kitchen-card:active {
+    .home-category-card:active {
       transform: scale(0.97);
       filter: brightness(1.08);
     }
 
     @media (max-width: 370px) {
-      .grocery-kitchen-grid {
+      .home-category-grid {
         gap: 6px;
       }
 
-      .grocery-kitchen-card {
+      .home-category-card {
         border-radius: 11px;
       }
 
-      .grocery-kitchen-heading h2 {
+      .home-category-heading h2 {
         font-size: 20px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .grocery-kitchen-card {
+      .home-category-card {
         transition: none;
       }
     }
@@ -107,25 +187,38 @@ const installStyles = () => {
   document.head.appendChild(style);
 };
 
-const createSection = () => {
+const createSection = (sectionData: HomeCategorySection) => {
   const section = document.createElement('section');
-  section.className = SECTION_CLASS;
-  section.setAttribute('aria-label', 'Grocery and Kitchen categories');
+  section.className = 'home-category-section';
+  section.dataset.categorySection = sectionData.id;
+  section.setAttribute('aria-label', sectionData.ariaLabel);
 
   const heading = document.createElement('div');
-  heading.className = 'grocery-kitchen-heading';
-  heading.innerHTML = '<h2>Grocery &amp; <span>Kitchen</span></h2><div class="grocery-kitchen-underline" aria-hidden="true"></div>';
+  heading.className = 'home-category-heading';
+
+  const title = document.createElement('h2');
+  title.append(`${sectionData.heading} `);
+  const accent = document.createElement('span');
+  accent.textContent = sectionData.accent;
+  title.appendChild(accent);
+
+  const underline = document.createElement('div');
+  underline.className = 'home-category-underline';
+  underline.setAttribute('aria-hidden', 'true');
+  heading.append(title, underline);
 
   const grid = document.createElement('div');
-  grid.className = 'grocery-kitchen-grid';
+  grid.className = 'home-category-grid';
 
-  categories.forEach((category) => {
+  sectionData.categories.forEach((category) => {
     const card = document.createElement('button');
-    card.className = 'grocery-kitchen-card';
+    card.className = 'home-category-card';
     card.type = 'button';
     card.setAttribute('aria-label', category.label);
     card.title = category.label;
-    card.style.backgroundImage = `url("${groceryKitchenSprite}")`;
+    card.style.aspectRatio = sectionData.aspectRatio;
+    card.style.backgroundImage = `url("${sectionData.image}")`;
+    card.style.backgroundSize = sectionData.backgroundSize;
     card.style.backgroundPosition = category.position;
     grid.appendChild(card);
   });
@@ -134,13 +227,17 @@ const createSection = () => {
   return section;
 };
 
-const mountGrocerySection = () => {
+const mountCategorySections = () => {
   installStyles();
 
   const nearbySection = document.querySelector<HTMLElement>('.nearby-section');
-  if (!nearbySection || document.querySelector(`.${SECTION_CLASS}`)) return;
+  if (!nearbySection || document.getElementById(GROUP_ID)) return;
 
-  nearbySection.insertAdjacentElement('beforebegin', createSection());
+  const group = document.createElement('div');
+  group.id = GROUP_ID;
+  group.className = 'home-category-groups';
+  sections.forEach((section) => group.appendChild(createSection(section)));
+  nearbySection.insertAdjacentElement('beforebegin', group);
 };
 
 let mountScheduled = false;
@@ -149,7 +246,7 @@ const scheduleMount = () => {
   mountScheduled = true;
   requestAnimationFrame(() => {
     mountScheduled = false;
-    mountGrocerySection();
+    mountCategorySections();
   });
 };
 
