@@ -7,6 +7,9 @@ import './header-location.css';
 import './search-bar.css';
 import './search-page.css';
 import './category-cards.css';
+import './store-images/freshmart.css';
+import './store-images/food-junction.css';
+import './store-images/quickfix.css';
 import './bottom-nav.css';
 import './promo-image';
 
