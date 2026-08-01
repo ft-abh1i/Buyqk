@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Bell,
   ChevronDown,
@@ -42,6 +42,131 @@ type Store = {
   rating: string;
   eta: string;
   badgeClass: string;
+};
+
+type LocationStatus = 'idle' | 'loading' | 'success' | 'error';
+
+type ReverseGeocodeResponse = {
+  display_name?: string;
+  address?: {
+    neighbourhood?: string;
+    suburb?: string;
+    city_district?: string;
+    town?: string;
+    city?: string;
+    village?: string;
+    county?: string;
+    state_district?: string;
+    state?: string;
+  };
+};
+
+type SavedLocation = {
+  latitude: number;
+  longitude: number;
+  label: string;
+  updatedAt: number;
+};
+
+const LOCATION_STORAGE_KEY = 'buyqk-user-location';
+let activeLocationRequest: Promise<SavedLocation> | null = null;
+
+const getSavedLocation = (): SavedLocation | null => {
+  try {
+    const savedValue = localStorage.getItem(LOCATION_STORAGE_KEY);
+    return savedValue ? (JSON.parse(savedValue) as SavedLocation) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveLocation = (location: SavedLocation) => {
+  try {
+    localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(location));
+  } catch {
+    // Location still works when storage is unavailable.
+  }
+};
+
+const getReadableLocation = async (latitude: number, longitude: number) => {
+  const params = new URLSearchParams({
+    format: 'jsonv2',
+    lat: latitude.toString(),
+    lon: longitude.toString(),
+    zoom: '18',
+    addressdetails: '1',
+    'accept-language': 'en',
+  });
+
+  const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error('Reverse geocoding failed');
+  }
+
+  const result = (await response.json()) as ReverseGeocodeResponse;
+  const address = result.address;
+
+  return (
+    address?.neighbourhood ||
+    address?.suburb ||
+    address?.city_district ||
+    address?.town ||
+    address?.city ||
+    address?.village ||
+    address?.county ||
+    address?.state_district ||
+    address?.state ||
+    result.display_name?.split(',')[0] ||
+    'Current location'
+  );
+};
+
+const requestCurrentLocation = () => {
+  if (activeLocationRequest) return activeLocationRequest;
+
+  activeLocationRequest = new Promise<SavedLocation>((resolve, reject) => {
+    if (!('geolocation' in navigator)) {
+      reject(new Error('Geolocation is not supported'));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        try {
+          let label = 'Current location';
+
+          try {
+            label = await getReadableLocation(coords.latitude, coords.longitude);
+          } catch {
+            // Keep a useful fallback even when the geocoding service is unavailable.
+          }
+
+          const location: SavedLocation = {
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+            label,
+            updatedAt: Date.now(),
+          };
+
+          saveLocation(location);
+          resolve(location);
+        } catch (error) {
+          reject(error);
+        }
+      },
+      (error) => reject(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 300000,
+      },
+    );
+  }).finally(() => {
+    activeLocationRequest = null;
+  });
+
+  return activeLocationRequest;
 };
 
 const categories: Category[] = [
@@ -128,23 +253,57 @@ const navItems = [
 ];
 
 function App() {
+  const savedLocation = getSavedLocation();
   const [activeTab, setActiveTab] = useState('home');
   const [query, setQuery] = useState('');
+  const [locationName, setLocationName] = useState(savedLocation?.label ?? 'Detecting location');
+  const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
+
+  const updateLocation = useCallback(async () => {
+    setLocationStatus('loading');
+    setLocationName((currentName) => (currentName === 'Location unavailable' ? 'Detecting location' : currentName));
+
+    try {
+      const currentLocation = await requestCurrentLocation();
+      setLocationName(currentLocation.label);
+      setLocationStatus('success');
+    } catch {
+      setLocationName(savedLocation?.label ?? 'Location unavailable');
+      setLocationStatus('error');
+    }
+  }, [savedLocation?.label]);
+
+  useEffect(() => {
+    void updateLocation();
+  }, [updateLocation]);
+
+  const locationHint =
+    locationStatus === 'loading'
+      ? 'Finding your current location'
+      : locationStatus === 'error'
+        ? 'Tap to retry location'
+        : 'Deliver to';
 
   return (
     <div className="page-shell">
       <div className="app-frame">
         <main className="app-content">
           <header className="top-header">
-            <button className="location-control" type="button" aria-label="Change delivery location">
+            <button
+              className={`location-control location-control--${locationStatus}`}
+              type="button"
+              aria-label="Refresh current delivery location"
+              aria-busy={locationStatus === 'loading'}
+              onClick={() => void updateLocation()}
+            >
               <span className="location-icon-wrap">
-                <MapPin size={27} strokeWidth={2.8} />
+                <MapPin size={23} strokeWidth={2.1} />
               </span>
               <span className="location-copy">
-                <span className="location-kicker">Deliver to</span>
+                <span className="location-kicker">{locationHint}</span>
                 <span className="location-name-row">
-                  <strong>Ghaziabad</strong>
-                  <ChevronDown size={21} strokeWidth={2.5} />
+                  <strong title={locationName}>{locationName}</strong>
+                  <ChevronDown size={19} strokeWidth={2.3} />
                 </span>
               </span>
             </button>
