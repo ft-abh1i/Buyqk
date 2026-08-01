@@ -11,7 +11,7 @@
 }
 
 .category-card {
-  width: min(100%, 84px) !important;
+  width: min(100%, 88.2px) !important;
   height: auto !important;
   aspect-ratio: 1 / 1;
   min-width: 0;
@@ -83,7 +83,7 @@
   }
 
   .category-card {
-    width: min(100%, 76px) !important;
+    width: min(100%, 79.8px) !important;
     border-radius: 11px;
   }
 
