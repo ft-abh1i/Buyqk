@@ -458,3 +458,28 @@ export function installSearchPage() {
       const target = event.target as HTMLElement | null;
       const homeSearchInput = target?.closest('.search-panel input') as HTMLInputElement | null;
       if (!homeSearchInput) return;
+
+      const initialQuery = homeSearchInput.value;
+      homeSearchInput.blur();
+      openSearch(initialQuery);
+    },
+    true,
+  );
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+
+    const homeSearchPanel = target.closest('.search-panel');
+    if (homeSearchPanel) {
+      const input = homeSearchPanel.querySelector('input') as HTMLInputElement | null;
+      openSearch(input?.value ?? '');
+      return;
+    }
+
+    const navButton = target.closest('.nav-item');
+    if (navButton?.textContent?.includes('Explore')) {
+      openSearch();
+    }
+  });
+}
