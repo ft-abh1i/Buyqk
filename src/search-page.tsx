@@ -68,33 +68,33 @@ const stores: StoreItem[] = [
     name: 'FreshMart',
     image: '/assets/stores/freshmart.webp',
     fallback: 'FM',
-    rating: '4.7',
+    rating: '4.4',
     reviews: '1.2K+',
     eta: '10–15 min',
     categories: 'Grocery · Fruits · Dairy',
     offer: 'Free delivery above ₹199',
   },
   {
-    id: 'mediquick',
-    name: 'MediQuick',
-    image: '/assets/categories/medicines.webp',
-    fallback: 'MQ',
-    rating: '4.8',
-    reviews: '980+',
-    eta: '15–20 min',
-    categories: 'Pharmacy · Wellness',
-    offer: '20% OFF above ₹499',
-  },
-  {
     id: 'food-junction',
     name: 'Food Junction',
     image: '/assets/stores/food-junction.webp',
     fallback: 'FJ',
-    rating: '4.6',
+    rating: '4.3',
     reviews: '750+',
     eta: '15–20 min',
     categories: 'Meals · Snacks · Drinks',
     offer: '₹50 OFF above ₹249',
+  },
+  {
+    id: 'quickfix-services',
+    name: 'QuickFix Services',
+    image: '/assets/stores/quickfix.webp',
+    fallback: 'QF',
+    rating: '4.6',
+    reviews: '640+',
+    eta: '20–25 min',
+    categories: 'Home services · Repairs',
+    offer: '₹100 OFF on first booking',
   },
 ];
 
@@ -458,28 +458,3 @@ export function installSearchPage() {
       const target = event.target as HTMLElement | null;
       const homeSearchInput = target?.closest('.search-panel input') as HTMLInputElement | null;
       if (!homeSearchInput) return;
-
-      const initialQuery = homeSearchInput.value;
-      homeSearchInput.blur();
-      openSearch(initialQuery);
-    },
-    true,
-  );
-
-  document.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement | null;
-    if (!target) return;
-
-    const homeSearchPanel = target.closest('.search-panel');
-    if (homeSearchPanel) {
-      const input = homeSearchPanel.querySelector('input') as HTMLInputElement | null;
-      openSearch(input?.value ?? '');
-      return;
-    }
-
-    const navButton = target.closest('.nav-item');
-    if (navButton?.textContent?.includes('Explore')) {
-      openSearch();
-    }
-  });
-}
