@@ -99,10 +99,6 @@ const installStyles = () => {
   const style = document.createElement('style');
   style.id = STYLE_ID;
   style.textContent = `
-    .nearby-section {
-      display: none !important;
-    }
-
     .home-category-groups {
       padding-bottom: 8px;
     }
@@ -237,7 +233,7 @@ const mountCategorySections = () => {
   group.id = GROUP_ID;
   group.className = 'home-category-groups';
   sections.forEach((section) => group.appendChild(createSection(section)));
-  nearbySection.insertAdjacentElement('beforebegin', group);
+  nearbySection.insertAdjacentElement('afterend', group);
 };
 
 let mountScheduled = false;
