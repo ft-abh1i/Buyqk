@@ -15,7 +15,7 @@
   height: 100dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: max(14px, env(safe-area-inset-top)) 14px 112px;
+  padding: max(14px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom));
   color: #f7f8ff;
   background:
     radial-gradient(circle at 88% 4%, rgba(116, 49, 255, 0.14), transparent 26%),
@@ -386,74 +386,6 @@
   color: #bdf4cb;
   background: rgba(49, 176, 95, 0.13);
   font-size: 9px;
-}
-
-.explore-bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: max(8px, env(safe-area-inset-bottom));
-  z-index: 10001;
-  width: min(calc(100% - 20px), 412px);
-  height: 78px;
-  padding: 7px 8px 8px;
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  align-items: center;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(78, 67, 170, 0.17), transparent 38%),
-    linear-gradient(180deg, rgba(9, 18, 50, 0.98), rgba(4, 10, 31, 0.99));
-  border: 1px solid rgba(112, 132, 201, 0.31);
-  box-shadow:
-    0 12px 34px rgba(0, 0, 0, 0.48),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045);
-}
-
-.explore-bottom-nav > button {
-  height: 59px;
-  min-width: 0;
-  padding: 4px 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 4px;
-  border-radius: 15px;
-  color: #9199b5;
-  background: transparent;
-  font-size: 9px;
-}
-
-.explore-bottom-nav > button.is-active {
-  color: #ff9d18;
-}
-
-.explore-bottom-nav > button.is-active svg {
-  filter: drop-shadow(0 4px 8px rgba(255, 157, 24, 0.2));
-}
-
-.explore-nav-ai {
-  align-self: end;
-  transform: translateY(-8px);
-  color: #f7f7ff !important;
-}
-
-.explore-nav-ai-orb {
-  width: 53px;
-  height: 53px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: #fff;
-  background:
-    radial-gradient(circle at 31% 24%, #3fc2ff 0%, #247df5 18%, #6633ef 43%, #e91872 72%, #ff9818 100%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 0 0 4px rgba(53, 69, 160, 0.22),
-    0 0 18px rgba(80, 102, 255, 0.58),
-    0 8px 18px rgba(0, 0, 0, 0.37),
-    inset 0 1px 5px rgba(255, 255, 255, 0.4);
 }
 
 @media (max-width: 370px) {

@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom/client';
 import {
   ArrowLeft,
   ChevronRight,
-  ClipboardList,
   Clock3,
-  Home,
   MapPin,
   Mic,
   Search,
@@ -14,7 +12,6 @@ import {
   Star,
   Tag,
   TrendingUp,
-  UserRound,
   X,
   Zap,
 } from 'lucide-react';
@@ -287,28 +284,6 @@ function SearchPage() {
           </div>
         </section>
 
-        <nav className="explore-bottom-nav" aria-label="Explore navigation">
-          <button type="button" onClick={() => setIsOpen(false)}>
-            <Home size={21} />
-            <span>Home</span>
-          </button>
-          <button className="is-active" type="button">
-            <Search size={22} />
-            <span>Explore</span>
-          </button>
-          <button className="explore-nav-ai" type="button">
-            <span className="explore-nav-ai-orb"><Sparkles size={25} fill="currentColor" /></span>
-            <span>QK AI</span>
-          </button>
-          <button type="button">
-            <ClipboardList size={21} />
-            <span>Orders</span>
-          </button>
-          <button type="button">
-            <UserRound size={21} />
-            <span>Account</span>
-          </button>
-        </nav>
       </div>
     </div>
   );
