@@ -1,15 +1,13 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   ArrowLeft,
   ChevronRight,
   ClipboardList,
   Clock3,
-  Heart,
   Home,
   MapPin,
   Mic,
-  Plus,
   Search,
   ShoppingCart,
   Sparkles,
@@ -35,18 +33,6 @@ type StoreItem = {
   eta: string;
   categories: string;
   offer: string;
-};
-
-type ProductItem = {
-  id: string;
-  name: string;
-  unit: string;
-  price: number;
-  oldPrice: number;
-  discount: string;
-  emoji: string;
-  fresh?: boolean;
-  keywords: string[];
 };
 
 const OPEN_SEARCH_EVENT = 'buyqk:open-search';
@@ -98,52 +84,6 @@ const stores: StoreItem[] = [
   },
 ];
 
-const products: ProductItem[] = [
-  {
-    id: 'milk',
-    name: 'Amul Taaza Milk',
-    unit: '1 L pouch',
-    price: 54,
-    oldPrice: 66,
-    discount: '18% OFF',
-    emoji: '🥛',
-    fresh: true,
-    keywords: ['milk', 'amul', 'dairy', 'fresh'],
-  },
-  {
-    id: 'bread',
-    name: 'Britannia Brown Bread',
-    unit: '400 g',
-    price: 36,
-    oldPrice: 40,
-    discount: '10% OFF',
-    emoji: '🍞',
-    keywords: ['bread', 'britannia', 'brown bread', 'bakery'],
-  },
-  {
-    id: 'banana',
-    name: 'Organic Bananas',
-    unit: '500 g',
-    price: 34,
-    oldPrice: 39,
-    discount: '12% OFF',
-    emoji: '🍌',
-    fresh: true,
-    keywords: ['banana', 'bananas', 'fruit', 'organic'],
-  },
-  {
-    id: 'paneer',
-    name: 'Fresh Paneer',
-    unit: '200 g',
-    price: 92,
-    oldPrice: 110,
-    discount: '16% OFF',
-    emoji: '🧀',
-    fresh: true,
-    keywords: ['paneer', 'dairy', 'fresh paneer'],
-  },
-];
-
 const readRecentSearches = () => {
   try {
     const storedValue = localStorage.getItem(RECENT_SEARCHES_KEY);
@@ -160,8 +100,7 @@ function SearchPage() {
   const [query, setQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>(readRecentSearches);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
-  const [cartCount, setCartCount] = useState(2);
-  const [likedProducts, setLikedProducts] = useState<string[]>([]);
+  const cartCount = 2;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -191,15 +130,6 @@ function SearchPage() {
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
-
-  const normalizedQuery = query.trim().toLowerCase();
-  const visibleProducts = useMemo(() => {
-    if (!normalizedQuery) return products;
-
-    return products.filter((product) =>
-      [product.name, product.unit, ...product.keywords].join(' ').toLowerCase().includes(normalizedQuery),
-    );
-  }, [normalizedQuery]);
 
   const saveRecentSearch = (value: string) => {
     const trimmedValue = value.trim();
@@ -246,14 +176,6 @@ function SearchPage() {
     );
   };
 
-  const toggleLike = (productId: string) => {
-    setLikedProducts((currentProducts) =>
-      currentProducts.includes(productId)
-        ? currentProducts.filter((id) => id !== productId)
-        : [...currentProducts, productId],
-    );
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -280,8 +202,8 @@ function SearchPage() {
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search products, stores or services"
-            aria-label="Search products, stores and services"
+            placeholder="Search stores or services"
+            aria-label="Search stores and services"
           />
           {query && (
             <button className="explore-clear-button" type="button" onClick={() => setQuery('')} aria-label="Clear search">
@@ -363,50 +285,6 @@ function SearchPage() {
               </button>
             ))}
           </div>
-        </section>
-
-        <section className="explore-section explore-products-section">
-          <div className="explore-section-heading">
-            <h2>Products</h2>
-            <span>{visibleProducts.length === products.length ? '120+ results' : `${visibleProducts.length} results`}</span>
-          </div>
-
-          <div className="explore-product-list">
-            {visibleProducts.map((product) => (
-              <article className="explore-product-card" key={product.id}>
-                <div className="explore-product-visual" aria-hidden="true">{product.emoji}</div>
-                <div className="explore-product-copy">
-                  <strong>{product.name}</strong>
-                  <span>{product.unit} {product.fresh && <em>Fresh</em>}</span>
-                  <div className="explore-product-pricing">
-                    <b>₹{product.price}</b>
-                    <del>₹{product.oldPrice}</del>
-                    <small>{product.discount}</small>
-                  </div>
-                </div>
-                <button
-                  className={`explore-like-button ${likedProducts.includes(product.id) ? 'is-liked' : ''}`}
-                  type="button"
-                  onClick={() => toggleLike(product.id)}
-                  aria-label={`Like ${product.name}`}
-                >
-                  <Heart size={18} fill={likedProducts.includes(product.id) ? 'currentColor' : 'none'} />
-                </button>
-                <button className="explore-add-button" type="button" onClick={() => setCartCount((count) => count + 1)}>
-                  <Plus size={17} /> Add
-                </button>
-              </article>
-            ))}
-          </div>
-
-          {visibleProducts.length === 0 && (
-            <div className="explore-empty-state">
-              <span>🔎</span>
-              <h3>No matching products</h3>
-              <p>Try another product, store or service.</p>
-              <button type="button" onClick={() => setQuery('')}>Browse all products</button>
-            </div>
-          )}
         </section>
 
         <nav className="explore-bottom-nav" aria-label="Explore navigation">
