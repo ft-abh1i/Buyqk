@@ -1,7 +1,9 @@
+import compareCardImage from './assets/compare-before-buy.webp';
+
 const CAROUSEL_ID = 'buyqk-promo-carousel';
 const SOURCE_HIDDEN_CLASS = 'promo-card--carousel-source';
 const SLIDE_INTERVAL_MS = 4500;
-const COMPARE_CARD_IMAGE = `${import.meta.env.BASE_URL}assets/banner/compare-before-buy.webp?v=3`;
+const COMPARE_CARD_IMAGE = compareCardImage;
 
 export function installPromoCarousel() {
   const mountCarousel = () => {
